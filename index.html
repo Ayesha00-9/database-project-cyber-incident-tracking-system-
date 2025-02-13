@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Security Incident Tracking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            position: relative;
+        }
+        .logout-button {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background-color:rgb(14, 106, 4);
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .logout-button:hover {
+            background-color: #0077A3;
+        }
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .button {
+            padding: 10px 15px;
+            margin: 5px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .delete-button {
+            background-color: #f44336;
+        }
+        .delete-button:hover {
+            background-color: #d32f2f;
+        }
+        .form-container {
+            width: 50%;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-container input, .form-container select, .form-container textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Cyber Security Incident Tracking Management</h1>
+        <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
+    </header>
+
+    <!-- Add Incident and User Form -->
+    <div class="form-container">
+        <h3>Add New Incident and User</h3>
+        <form action="/add-incident-user" method="POST">
+            <!-- Incident Fields -->
+            <label for="incident_title">Incident Title:</label>
+            <input type="text" id="incident_title" name="incident_title" required>
+
+            <label for="incident_description">Description:</label>
+            <textarea id="incident_description" name="incident_description" rows="4" required></textarea>
+
+            <label for="incident_severity">Severity:</label>
+            <select id="incident_severity" name="incident_severity" required>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+                <option value="Critical">Critical</option>
+            </select>
+
+            <label for="incident_reporter">Reporter (User ID):</label>
+            <input type="number" id="incident_reporter" name="incident_reporter" required>
+
+            <!-- User Fields -->
+            <label for="user_name">User Full Name:</label>
+            <input type="text" id="user_name" name="user_name" required>
+
+            <label for="user_email">User Email:</label>
+            <input type="email" id="user_email" name="user_email" required>
+
+            <label for="user_role">User Role:</label>
+            <select id="user_role" name="user_role" required>
+                <option value="Admin">Admin</option>
+                <option value="User">User</option>
+            </select>
+
+            <button class="button" type="submit">Add Incident & User</button>
+        </form>
+    </div>
+
+    <!-- Incident Table -->
+    <h2 style="text-align: center;">Incidents</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Incident ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Severity</th>
+                <th>Status</th>
+                <th>Reporter</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for incident in incidents %}
+            <tr>
+                <td>{{ incident[0] }}</td>
+                <td>{{ incident[1] }}</td>
+                <td>{{ incident[2] }}</td>
+                <td>{{ incident[3] }}</td>
+                <td>{{ incident[4] if incident[4] else 'Open' }}</td>
+                <td>{{ incident[5] }}</td>
+                <td>
+                    <form action="/resolve-incident/{{ incident[0] }}" method="POST" style="display: inline;">
+                        <button class="button" type="submit">Resolve</button>
+                    </form>
+                    <form action="/delete-incident/{{ incident[0] }}" method="POST" style="display: inline;">
+                        <button class="button delete-button" type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- User Table -->
+    <h2 style="text-align: center;">Users</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user[0] }}</td>
+                <td>{{ user[1] }}</td>
+                <td>{{ user[2] }}</td>
+                <td>{{ user[3] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>
