@@ -74,7 +74,7 @@ The name column was removed to avoid redundancy.
 
 Clone the Repository
 
-git clone https://github.com/YOUR_USERNAME/CyberSecurityIncidentTracking.git
+git clone https://github.com/Ayesha00-9/database-project-cyber-incident-tracking-system-/blob/main/README.md
 cd CyberSecurityIncidentTracking
 
 Set Up PostgreSQL Database
